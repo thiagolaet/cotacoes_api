@@ -1,8 +1,9 @@
-from flask.globals import request
 from app import app
+from helpers import formatRates
 from flask import json
 from datetime import datetime, timedelta
 from requests_futures.sessions import FuturesSession
+
 
 VAT_COMPLY_URL = 'https://api.vatcomply.com'
 
@@ -22,6 +23,8 @@ def rates():
     for future in futures:
         response = future.result()
         rates.append(json.loads(response.content))
+
+    rates = formatRates(rates)
 
     return app.response_class(
         response=json.dumps(rates),
