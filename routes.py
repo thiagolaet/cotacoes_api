@@ -13,11 +13,13 @@ def rates():
     requestUrls = []
     rates = []
 
+    # Criando arrays com as datas dos últimos 7 dias e os links das requisições
     for i in range(7):
         if (i < 6): week.append(week[i] - timedelta(days=1))
         week[i] = week[i].strftime('%Y-%m-%d')
         requestUrls.append(f'{VAT_COMPLY_URL}/rates?base=USD&date={week[i]}')
 
+    # Realizando as requisições de maneira simultânea
     session = FuturesSession()
     futures = [session.get(url) for url in requestUrls]
     for future in futures:
